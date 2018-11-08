@@ -1,7 +1,7 @@
 // Listen on a specific host via the HOST environment variable
 var host = process.env.HOST || '0.0.0.0';
 // Listen on a specific port via the PORT environment variable
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 9708;
 
 // Grab the blacklist from the command-line so that we can update the blacklist without deploying
 // again. CORS Anywhere is open by design, and this blacklist is not used, except for countering
@@ -23,16 +23,19 @@ var cors_proxy = require('./lib/cors-anywhere');
 cors_proxy.createServer({
   originBlacklist: originBlacklist,
   originWhitelist: originWhitelist,
-  requireHeader: ['origin', 'x-requested-with'],
+//  requireHeader: ['origin', 'x-requested-with'],
+  requireHeader: [],
   checkRateLimit: checkRateLimit,
   removeHeaders: [
-    'cookie',
-    'cookie2',
+    //'cookie',
+    //'cookie2',
     // Strip Heroku-specific headers
     'x-heroku-queue-wait-time',
     'x-heroku-queue-depth',
     'x-heroku-dynos-in-use',
     'x-request-start',
+    'origin',
+    'x-requested-with',
   ],
   redirectSameOrigin: true,
   httpProxyOptions: {
